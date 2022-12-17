@@ -14,11 +14,20 @@ interface Products {
   total: number;
 }
 
+interface CreateProducts {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+  qtd?: number;
+  total?: number;
+}
+
 interface CycleContextType {
   sum: number;
   productsCart: Products[];
   addressFill: validationAddressData;
-  addProductToCart: (id: number, name: string, image: string, price: number) => void;
+  addProductToCart: (product: CreateProducts) => void;
   removeProductFromCart: (id: number) => void;
   deleteItemFromCart: (id: number) => void;
   addressData: (data: validationAddressData) => void;
@@ -37,8 +46,10 @@ export function CycleContextProvider({ children }: CyclesContextProviderProps) {
     setSum(sum)
   }, [productsCart])
 
-  function addProductToCart(id: number, name: string, image: string, price: number) {
+  function addProductToCart(product: CreateProducts) {
     if (window.event) window.event.preventDefault();
+    const { id, image, name, price } = product
+
     const copyProductsCart = [...productsCart]
     const item: Products | undefined = copyProductsCart.find((product: Products) => product.id === id);
 
@@ -64,7 +75,7 @@ export function CycleContextProvider({ children }: CyclesContextProviderProps) {
 
   function removeProductFromCart(id: number) {
     if (window.event) window.event.preventDefault();
-    const copyProductsCart: Products[] = [...productsCart];
+    const copyProductsCart = [...productsCart];
     const item = copyProductsCart.find((product: Products) => product.id === id);
 
     if (item && item.qtd > 1) {

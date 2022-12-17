@@ -3,6 +3,7 @@ import { Minus, Plus, ShoppingCartSimple } from "phosphor-react";
 import { data } from '../../../../data'
 import { useContext, useState } from "react";
 import { CycleContext } from "../../../../context/context";
+import { priceFormatter } from "../../../../utils/formatter";
 
 export function Card() {
   const [products] = useState(data)
@@ -29,14 +30,14 @@ export function Card() {
             <h2>{product.name}</h2>
             <p>{product.description}</p>
             <div className="buy">
-              <strong>{product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>
+              <strong>{priceFormatter.format(product.price)}</strong>
               <div className="action">
                 <button onClick={() => removeProductFromCart(product.id)} >
                   <Minus size={10} />
                 </button>
                 <p>{productsCart.find((item) => item.id === product.id)?.qtd ? productsCart.find((item) => item.id === product.id)?.qtd : 0}
                 </p>
-                <button onClick={() => addProductToCart(product.id, product.name, product.image, product.price)} >
+                <button onClick={() => addProductToCart(product)} >
                   <Plus size={10} />
                 </button>
               </div>
